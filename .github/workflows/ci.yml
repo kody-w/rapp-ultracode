@@ -35,7 +35,15 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
       - run: python -m pip install ".[test]"
-      - run: python -m pytest -q
+      - if: runner.os != 'Windows'
+        run: python -m pytest -q
+      - if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          Get-ChildItem tests/test_*.py | ForEach-Object {
+            python -m pytest -q $_.FullName
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          }
       - run: rapp-ultracode --version
 
   package:
@@ -49,4 +57,3 @@ jobs:
       - run: python -m build
       - run: python -m pip install dist/*.whl
       - run: rapp-ultracode --json --version
-
