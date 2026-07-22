@@ -17,6 +17,7 @@ def git_repo(tmp_path: Path) -> Path:
         check=True,
     )
     subprocess.run(["git", "config", "user.name", "Tests"], cwd=repo, check=True)
+    subprocess.run(["git", "config", "core.autocrlf", "false"], cwd=repo, check=True)
     (repo / "app.py").write_text("VALUE = 1\n", encoding="utf-8")
     subprocess.run(["git", "add", "app.py"], cwd=repo, check=True)
     subprocess.run(["git", "commit", "-m", "initial"], cwd=repo, check=True, capture_output=True)
