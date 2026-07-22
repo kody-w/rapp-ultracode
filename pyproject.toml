@@ -1,0 +1,65 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "rapp-ultracode"
+version = "0.1.0"
+description = "Approval-gated long-running coding workflows built on RAPP Dynamic Workflows."
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [{ name = "Kody Wildfeuer" }]
+requires-python = ">=3.11"
+dependencies = [
+    "github-copilot-sdk==1.0.7",
+    "jsonschema>=4",
+    "pydantic>=2,<3",
+    "rapp-dynamic-workflows @ git+https://github.com/kody-w/rapp-dynamic-workflows.git@b8b1de6d3b187e5e488b5b745d82df131525796f",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+]
+
+[project.optional-dependencies]
+test = [
+    "build>=1.2",
+    "pytest>=8",
+    "pytest-asyncio>=0.23",
+    "ruff>=0.5",
+]
+
+[project.scripts]
+rapp-ultracode = "rapp_ultracode.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/kody-w/rapp-ultracode"
+Repository = "https://github.com/kody-w/rapp-ultracode"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/rapp_ultracode"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"integrations/rapp/ultracode_factory_agent.py" = "rapp_ultracode/assets/ultracode_factory_agent.py"
+"schemas/rapp-ultracode-plan-1.0.schema.json" = "rapp_ultracode/schemas/rapp-ultracode-plan-1.0.schema.json"
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]

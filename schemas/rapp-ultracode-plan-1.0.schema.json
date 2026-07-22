@@ -1,0 +1,216 @@
+{
+  "$defs": {
+    "CheckSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "argv": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 32,
+          "minItems": 1,
+          "title": "Argv",
+          "type": "array"
+        },
+        "cwd": {
+          "default": ".",
+          "title": "Cwd",
+          "type": "string"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "timeout_seconds": {
+          "default": 900,
+          "maximum": 3600,
+          "minimum": 1,
+          "title": "Timeout Seconds",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "argv"
+      ],
+      "title": "CheckSpec",
+      "type": "object"
+    },
+    "RepositorySpec": {
+      "additionalProperties": false,
+      "properties": {
+        "base_sha": {
+          "pattern": "^[0-9a-f]{40}$",
+          "title": "Base Sha",
+          "type": "string"
+        },
+        "instruction_hashes": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Instruction Hashes",
+          "type": "object"
+        },
+        "path": {
+          "title": "Path",
+          "type": "string"
+        }
+      },
+      "required": [
+        "path",
+        "base_sha"
+      ],
+      "title": "RepositorySpec",
+      "type": "object"
+    },
+    "TaskSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "acceptance": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 32,
+          "minItems": 1,
+          "title": "Acceptance",
+          "type": "array"
+        },
+        "check_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Check Ids",
+          "type": "array"
+        },
+        "file_hints": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 64,
+          "title": "File Hints",
+          "type": "array"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "max_attempts": {
+          "default": 2,
+          "maximum": 3,
+          "minimum": 1,
+          "title": "Max Attempts",
+          "type": "integer"
+        },
+        "objective": {
+          "maxLength": 8000,
+          "minLength": 1,
+          "title": "Objective",
+          "type": "string"
+        },
+        "title": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "objective",
+        "acceptance"
+      ],
+      "title": "TaskSpec",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "assumptions": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 32,
+      "title": "Assumptions",
+      "type": "array"
+    },
+    "checks": {
+      "items": {
+        "$ref": "#/$defs/CheckSpec"
+      },
+      "maxItems": 32,
+      "title": "Checks",
+      "type": "array"
+    },
+    "created_at": {
+      "title": "Created At",
+      "type": "string"
+    },
+    "digest": {
+      "title": "Digest",
+      "type": "string"
+    },
+    "goal": {
+      "maxLength": 16000,
+      "minLength": 1,
+      "title": "Goal",
+      "type": "string"
+    },
+    "non_goals": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 32,
+      "title": "Non Goals",
+      "type": "array"
+    },
+    "plan_id": {
+      "title": "Plan Id",
+      "type": "string"
+    },
+    "repository": {
+      "$ref": "#/$defs/RepositorySpec"
+    },
+    "risks": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 32,
+      "title": "Risks",
+      "type": "array"
+    },
+    "schema": {
+      "const": "rapp-ultracode-plan/1.0",
+      "default": "rapp-ultracode-plan/1.0",
+      "title": "Schema",
+      "type": "string"
+    },
+    "summary": {
+      "maxLength": 2000,
+      "minLength": 1,
+      "title": "Summary",
+      "type": "string"
+    },
+    "tasks": {
+      "items": {
+        "$ref": "#/$defs/TaskSpec"
+      },
+      "maxItems": 12,
+      "minItems": 1,
+      "title": "Tasks",
+      "type": "array"
+    }
+  },
+  "required": [
+    "plan_id",
+    "created_at",
+    "goal",
+    "repository",
+    "summary",
+    "tasks",
+    "digest"
+  ],
+  "title": "Plan",
+  "type": "object"
+}
